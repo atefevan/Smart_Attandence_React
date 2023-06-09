@@ -86,7 +86,7 @@ export default function Home() {
             <thead>
               <th>ID</th>
               <th>IP</th>
-              <th>time</th>
+              <th>Time</th>
             </thead>
 
             {attendance.map((item) => (
