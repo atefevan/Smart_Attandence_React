@@ -6,7 +6,7 @@ import { toast } from "react-hot-toast";
 
 export default function Company() {
   const [loading, setLoading] = useState(false);
-  const [image, setImage] = useState(null);
+  // const [image, setImage] = useState(null);
 
   const nameRef = useRef();
   const addressRef = useRef();

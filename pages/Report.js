@@ -1,12 +1,6 @@
 import getTime from "@/utilities/getTime";
-import {
-  Document,
-  Page,
-  View,
-  Text,
-  PDFDownloadLink,
-  StyleSheet,
-} from "@react-pdf/renderer";
+import { Document, Page, View, Text, PDFDownloadLink, StyleSheet } from "@react-pdf/renderer";
+import { set } from "mongoose";
 import { useEffect, useState } from "react";
 
 const styles = StyleSheet.create({
@@ -18,79 +12,81 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRightWidth: 0,
     borderBottomWidth: 0,
-    margin: "7px 0px",
+    margin: "7px 0px"
   },
   tableRow: {
     margin: "auto",
-    flexDirection: "row",
+    flexDirection: "row"
   },
   tableColHeader: {
     borderStyle: "solid",
     borderBottomWidth: 1,
-    borderRightWidth: 1,
+    borderRightWidth: 1
   },
   tableCol: {
     borderStyle: "solid",
     borderBottomWidth: 0.5,
-    borderRightWidth: 1,
+    borderRightWidth: 1
   },
   tableCellHeader: {
     margin: 3,
     fontSize: 10,
     fontWeight: 500,
-    textAlign: "center",
+    textAlign: "center"
   },
   tableCell: {
     margin: 1,
     fontSize: 10,
-    textAlign: "center",
-  },
+    textAlign: "center"
+  }
 });
 
 const options = [
   {
     header: "Sl",
-    width: 35,
+    width: 35
   },
   {
     header: "Id",
     name: "id",
-    width: 50,
+    width: 50
   },
   {
     header: "Name",
     name: "name",
-    width: 152,
+    width: 152
   },
   {
     header: "Department",
     name: "department",
-    width: 70,
+    width: 70
   },
   {
     header: "Designation",
     name: "designation",
-    width: 70,
+    width: 70
   },
   {
     header: "In",
     name: "in",
-    width: 60,
+    width: 60
   },
   {
     header: "Out",
     name: "out",
-    width: 60,
+    width: 60
   },
   {
     header: "Signature",
-    width: 51,
-  },
+    width: 51
+  }
 ];
 
 const MyDoc = ({ company, users, date }) => (
   <Document>
-    <Page size="A4" style={{ margin: 24 }}>
+    <Page
+      size="A4"
+      style={{ margin: 24 }}>
       <View style={{ width: "548" }}>
         <View style={{ margin: "3 0", textAlign: "center" }}>
           <Text style={{ fontSize: 12 }}>{company?.name}</Text>
@@ -108,27 +104,21 @@ const MyDoc = ({ company, users, date }) => (
             {options.map((data, index) => (
               <View
                 style={{ ...styles.tableColHeader, width: data.width }}
-                key={index}
-              >
+                key={index}>
                 <Text style={styles.tableCellHeader}>{data.header}</Text>
               </View>
             ))}
           </View>
 
           {users?.map((info, i) => (
-            <View style={styles.tableRow} key={i}>
+            <View
+              style={styles.tableRow}
+              key={i}>
               {options.map((data, index) => (
                 <View
                   style={{ ...styles.tableCol, width: data.width }}
-                  key={index}
-                >
-                  <Text style={styles.tableCell}>
-                    {index === 0
-                      ? i + 1
-                      : data.name === "in" || data.name === "out"
-                      ? getTime(info[data.name], "time")
-                      : info[data.name]}
-                  </Text>
+                  key={index}>
+                  <Text style={styles.tableCell}>{index === 0 ? i + 1 : data.name === "in" || data.name === "out" ? getTime(info[data.name], "time") : info[data.name]}</Text>
                 </View>
               ))}
             </View>
@@ -139,7 +129,7 @@ const MyDoc = ({ company, users, date }) => (
   </Document>
 );
 
-export default function Report() {
+export default function Report({ setInfo }) {
   const [pdfBtn, setPdfBtn] = useState(null);
   const [date, setDate] = useState(getTime(new Date(), "input"));
 
@@ -149,27 +139,25 @@ export default function Report() {
     fetch("http://localhost:7000/api/dailyReport", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify({ date }),
+      body: JSON.stringify({ date })
     })
       .then((res) => res.json())
       .then((data) => {
+        setInfo(data.users);
         setPdfBtn(
           <>
             <PDFDownloadLink
               document={
-                <MyDoc company={data.company} users={data.users} date={date} />
+                <MyDoc
+                  company={data.company}
+                  users={data.users}
+                  date={date}
+                />
               }
-              fileName={`${getTime(date, "date")}.pdf`}
-            >
-              {({ blob, url, loading, error }) =>
-                loading ? (
-                  "Loading document..."
-                ) : (
-                  <button className="w-full h-5/6">Daily Report</button>
-                )
-              }
+              fileName={`${getTime(date, "date")}.pdf`}>
+              {({ blob, url, loading, error }) => (loading ? "Loading document..." : <button className="w-full h-5/6">Daily Report</button>)}
             </PDFDownloadLink>
           </>
         );
