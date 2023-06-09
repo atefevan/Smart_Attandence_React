@@ -5,7 +5,6 @@ import { useState } from "react";
 
 export default function AttendanceReport({ users }) {
   const [info, setInfo] = useState([]);
-  console.log(info);
   return (
     <Board title={"Attendance Report"} actionButton={<Report setInfo={setInfo} />}>
       <table>
