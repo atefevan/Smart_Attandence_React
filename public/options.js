@@ -4,7 +4,7 @@ import { VscHome } from "react-icons/vsc";
 import { BiCloudDownload } from "react-icons/bi";
 import { FiUsers } from "react-icons/fi";
 import { FaRegCalendarTimes } from "react-icons/fa";
-import {HiOutlineDocumentReport} from "react-icons/hi";
+import { HiOutlineDocumentReport } from "react-icons/hi";
 
 const menu = [
   {
@@ -32,11 +32,11 @@ const menu = [
     icon: <FiUsers />,
     sub: [
       {
-        name: "Add User",
+        name: "Add Employee",
         path: "/users/add-user",
       },
       {
-        name: "Manage Users",
+        name: "Manage Employees",
         path: "/users/manage-users",
       },
     ],
@@ -81,6 +81,10 @@ const menu = [
         name: "Office Hours",
         path: "/settings/hours",
       },
+      {
+        name: "Manage Departments",
+        path: "/settings/departments",
+      }
     ],
   },
   {
